@@ -1,8 +1,8 @@
 "use client";
-
 import React from "react";
 import Image from "next/image";
 import { FaBriefcase, FaBuilding, FaUsers, FaStar } from "react-icons/fa";
+import { motion } from "motion/react";
 
 const Stats = () => {
   const statsData = [
@@ -13,28 +13,36 @@ const Stats = () => {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-[#050505] py-16 md:py-32 px-4">
-      
-      {/* Background: Globe image with gradient masking */}
+    <section className="relative overflow-hidden bg-[#050505] py-16 md:py-28 px-4">
+  
       <div className="absolute inset-0 z-0 pointer-events-none mix-blend-screen opacity-20 md:opacity-40">
-        <div className="relative w-full h-full">
-          <Image
-            src="/images/globe.png" 
-            alt="Globe Backdrop"
-            fill
-            priority
-            className="object-contain md:object-cover scale-[2.5] md:scale-110"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]" />
+        <div className="relative w-full h-full flex items-center justify-center">
+          <motion.div 
+            className="relative w-full h-full"
+            animate={{ rotate: 360 }} 
+            transition={{
+              duration: 40,     
+              repeat: Infinity,    
+              ease: "linear"   
+            }}
+          >
+            <Image
+              src="/images/globe.png" 
+              alt="Globe Backdrop"
+              fill
+              priority
+              className="object-contain md:object-cover scale-[2.5] md:scale-110"
+            />
+          </motion.div>
+         
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505] z-10" />
         </div>
       </div>
 
-      {/* Visual: Ambient neon glow for premium feel */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 md:w-[600px] h-64 md:h-[600px] bg-blue-600/10 blur-[100px] md:blur-[150px] rounded-full pointer-events-none" />
 
       <div className="relative z-10 container mx-auto max-w-7xl">
         
-        {/* Header: Centered with responsive typography */}
         <div className="max-w-4xl mx-auto text-center mb-12 md:mb-24">
           <h2 className="text-2xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight">
             Assisting over{" "}
@@ -44,8 +52,7 @@ const Stats = () => {
             find their dream careers.
           </h2>
         </div>
-
-        {/* Grid: 1 col on mobile, 2 on tablet, 4 on desktop */}
+ 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {statsData.map((stat) => {
             const Icon = stat.icon;

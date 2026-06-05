@@ -12,19 +12,16 @@ const Navbar = () => {
     const { data: session } = authClient.useSession();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const user = session?.user;
-
-    console.log(user);
-
+    // console.log(user);
     const menuItems = [
         { name: "Browse Jobs", href: "/jobs" },
         { name: "Companies", href: "/companies" },
         { name: "Pricing", href: "/pricing" },
     ];
-
     return (
-        <nav className="sticky top-0 z-50 w-full pt-4 px-3">
+        <nav className="sticky top-0 z-50 w-full pt-2 px-3">
 
-            <div className="navbar max-w-7xl mx-auto bg-[#000000] text-white rounded-xl px-4 shadow-lg border border-white/5">
+            <div className="navbar max-w-7xl mx-auto bg-[#222222] text-white rounded-xl px-4 shadow-lg border border-white/5">
 
                 {/* Navbar Start: Logo */}
                 <div className="navbar-start">
