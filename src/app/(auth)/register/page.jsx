@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
+import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaGoogle, FaBriefcase } from "react-icons/fa";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -11,11 +11,11 @@ const RegisterPage = () => {
     const [showPassword, setShowPassword] = useState(false);
 
     const handleSignup = async (e) => {
-        e.preventDefault(); 
+        e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
-        const { name, email, password } = Object.fromEntries(formData.entries());
-        // console.log(name, email, password);
+        const { name, email, password, role } = Object.fromEntries(formData.entries());
+        // console.log(name, email, password, role);
 
         // Password Length Validation
         if (password.length < 6) {
@@ -35,17 +35,18 @@ const RegisterPage = () => {
             return;
         }
 
-        const { error } = await authClient.signUp.email({
+        const {data, error } = await authClient.signUp.email({
             email,
             password,
             name,
+            role,
         });
 
         // console.log("error check", error, data);
 
         if (error) {
-           toast.error(error?.message);
-           return;
+            toast.error(error?.message);
+            return;
         } else {
             toast.success("Registration successful")
             router.push("/")
@@ -103,6 +104,22 @@ const RegisterPage = () => {
                         </button>
                     </div>
 
+                    {/* role selector field */}
+                    <div className="relative">
+                        <FaBriefcase className="absolute left-4 top-4 text-gray-500 z-10" />
+                        <select 
+                            name="role" 
+                            defaultValue=""
+                            required 
+                            className="select w-full bg-[#0a0a0a] border border-white/10 rounded-xl pl-12 py-3 h-auto min-h-0 focus:outline-none focus:border-blue-500 text-gray-400 focus:text-white transition-all appearance-none"
+                        >
+                            <option value="" disabled>Choose your role</option>
+                            <option value="job_seeker" className="bg-[#111111] text-white">Job Seeker</option>
+                            <option value="recruiter" className="bg-[#111111] text-white">Recruiter</option>
+                        </select>
+                    </div>
+
+                    {/* register btn */}
                     <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition-all duration-300">
                         Sign Up
                     </button>
