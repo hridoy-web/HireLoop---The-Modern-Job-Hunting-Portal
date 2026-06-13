@@ -1,19 +1,24 @@
+'use client';
+
 import Image from 'next/image';
-import React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { FiGrid, FiFolder, FiBriefcase, FiSettings } from 'react-icons/fi';
 import { IoCardOutline } from 'react-icons/io5';
 
 const DashboardSidebar = () => {
+    const pathname = usePathname();
+
     const menuItems = [
-        { name: 'Dashboard', icon: <FiGrid className="text-xl" />, active: true },
-        { name: 'My Company', icon: <FiFolder className="text-xl" />, active: false },
-        { name: 'Manage Jobs', icon: <FiBriefcase className="text-xl" />, active: false },
-        { name: 'Applications', icon: <IoCardOutline className="text-xl" />, active: false },
-        { name: 'Settings', icon: <FiSettings className="text-xl" />, active: false },
+        { name: 'Dashboard', href: "/dashboard/recruiter", icon: <FiGrid className="text-xl" /> },
+        { name: 'My Company', href: "/dashboard/recruiter/company", icon: <FiFolder className="text-xl" /> },
+        { name: 'Manage Jobs', href: "/dashboard/recruiter/jobs", icon: <FiBriefcase className="text-xl" /> },
+        { name: 'Create A Job', href: "/dashboard/recruiter/jobs/new", icon: <IoCardOutline className="text-xl" /> },
+        { name: 'Settings', href: "/dashboard/recruiter/settings", icon: <FiSettings className="text-xl" /> },
     ];
 
     return (
-        <div className="flex flex-col w-64 min-h-full bg-[#111214] text-zinc-400 p-6 border-r border-zinc-800 ">
+        <div className="flex flex-col w-64 min-h-full bg-[#111214] text-zinc-400 p-6 border-r border-zinc-800">
 
             <div className="flex flex-col items-start gap-3 mb-8 px-2">
                 <div className="flex items-center gap-3">
@@ -40,27 +45,31 @@ const DashboardSidebar = () => {
             </div>
 
             <div className="space-y-1.5 flex-1">
-                {menuItems.map((item, index) => (
-                    <button
-                        key={index}
-                        className={`w-full flex items-center justify-between px-3 py-3 rounded transition-all relative ${
-                            item.active
-                                ? 'bg-zinc-800/80 text-white font-medium'
-                                : 'hover:bg-zinc-900/50 hover:text-white'
-                        }`}
-                    >
-                        <div className="flex items-center gap-4">
-                            <span className={item.active ? 'text-white' : 'text-zinc-500'}>
-                                {item.icon}
-                            </span>
-                            <span className="text-sm">{item.name}</span>
-                        </div>
+                {menuItems.map((item, index) => {
+                    const isActive = pathname === item.href;
 
-                        {item.active && (
-                            <div className="absolute right-0 top-0 bottom-0 w-1 bg-white rounded-l"></div>
-                        )}
-                    </button>
-                ))}
+                    return (
+                        <Link
+                            key={index}
+                            href={item.href}
+                            className={`w-full flex items-center justify-between px-3 py-3 rounded transition-all relative ${isActive
+                                    ? 'bg-zinc-800/80 text-white font-medium'
+                                    : 'hover:bg-zinc-900/50 hover:text-white'
+                                }`}
+                        >
+                            <div className="flex items-center gap-4">
+                                <span className={isActive ? 'text-white' : 'text-zinc-500'}>
+                                    {item.icon}
+                                </span>
+                                <span className="text-sm">{item.name}</span>
+                            </div>
+
+                            {isActive && (
+                                <div className="absolute right-0 top-0 bottom-0 w-1 bg-white rounded-l"></div>
+                            )}
+                        </Link>
+                    );
+                })}
             </div>
         </div>
     );

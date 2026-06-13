@@ -1,6 +1,7 @@
 'use client';
 
 import { createJob } from '@/lib/actions/jobs';
+import { redirect } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { FiBriefcase, FiDollarSign, FiMapPin, FiCalendar, FiFileText, FiAward } from 'react-icons/fi';
 
@@ -22,17 +23,23 @@ const NewPostJobPage = () => {
         // all from data convert object format
         const jobData = Object.fromEntries(formData.entries());
 
+        // Add extra properties
+        jobData.status = "active";
+        jobData.companyId = "company_456";
+
+        // console.log('Submitted Job Data:', jobData);
+        // return;
+
         // database api connection
         const response = await createJob(jobData);
 
         if (response?.insertedId) {
             toast.success('Job posted successfully')
             form.reset();
+            redirect('/dashboard/recruiter')
         } else {
             toast.error('Something went wrong.')
         }
-
-        // console.log('Submitted Job Data:', jobData);
     };
 
     return (
